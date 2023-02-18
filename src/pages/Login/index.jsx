@@ -40,7 +40,7 @@ export const Login = () => {
 
 		if ('token' in user.payload) {
 			window.localStorage.setItem('token', user.payload.token)
-		}
+			}
 
 	}
 

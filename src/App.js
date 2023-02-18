@@ -15,7 +15,7 @@ function App() {
 	const dispatch = useDispatch()
 
 	useEffect(() => {
-		dispatch(fetchUserLogin)
+		dispatch(fetchUserLogin())
 	}, [])
 
 
@@ -28,7 +28,7 @@ function App() {
 					<Route path='/posts/:id' element={<FullPost />} />
 					<Route path='/addpost' element={<AddPost />} />
 					<Route path='/login' element={<Login />} />
-					<Route path='/regestration' element={<Registration />} />
+					<Route path='/register' element={<Registration />} />
 				</Routes>
 			</Container>
 		</>

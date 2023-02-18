@@ -16,6 +16,7 @@ export const Home = () => {
 
 	const dispatch = useDispatch()
 	const { data, status } = useSelector((state) => state.PostSice)
+	const auth = useSelector((state) => state.AuthSlice)
 	const tags = useSelector((state) => state.TagSlice)
 	const isPostsLoading = status === 'loading'
 
@@ -33,8 +34,11 @@ export const Home = () => {
 			<Grid container spacing={4}>
 
 				<Grid xs={8} item>
-					{(isPostsLoading ? [...Array(5)] : data).map((post) => (
-						isPostsLoading ? <Post isLoading={true} /> :
+					{!isPostsLoading && data.map((post, index) => (
+						(isPostsLoading
+							?
+							<Post isLoading={true} key={post._id} />
+							:
 							<Post
 								key={post._id}
 								_id={post._id}
@@ -48,8 +52,8 @@ export const Home = () => {
 								viewsCount={post.viewsCount}
 								commentsCount={3}
 								tags={post.tags}
-								isEditable
-							/>
+								isEditable={auth?.data?._id === post.user._id}
+							/>)
 					))}
 				</Grid>
 

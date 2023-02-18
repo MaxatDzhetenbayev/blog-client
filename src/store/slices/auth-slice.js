@@ -10,8 +10,20 @@ export const fetchUserAuth = createAsyncThunk(
 			validateStatus: function (status) {
 				return status <= 300
 			}
-		}
-		)
+		})
+		return data
+	}
+)
+
+export const fetchUserRegister = createAsyncThunk(
+	"auth/fetchUserRegister",
+	async (params) => {
+
+		const { data } = await axios.post('auth/register', params, {
+			validateStatus: function (status) {
+				return status <= 300
+			}
+		})
 		return data
 	}
 )
@@ -54,7 +66,7 @@ const authSlice = createSlice({
 		[fetchUserAuth.rejected]: (state, action) => {
 			state.status = "rejected"
 		},
-		
+
 		[fetchUserLogin.pending]: (state, action) => {
 			state.status = "pending"
 			state.error = null
@@ -63,7 +75,19 @@ const authSlice = createSlice({
 			state.status = "fullfield"
 			state.data = action.payload
 		},
-		[fetchUserLogin.rejected]: (state, action) => {
+		[fetchUserRegister.rejected]: (state, action) => {
+			state.status = "rejected"
+		},
+
+		[fetchUserRegister.pending]: (state, action) => {
+			state.status = "pending"
+			state.error = null
+		},
+		[fetchUserRegister.fulfilled]: (state, action) => {
+			state.status = "fullfield"
+			state.data = action.payload
+		},
+		[fetchUserRegister.rejected]: (state, action) => {
 			state.status = "rejected"
 		}
 	}
