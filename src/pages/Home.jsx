@@ -34,7 +34,7 @@ export const Home = () => {
 			<Grid container spacing={4}>
 
 				<Grid xs={8} item>
-					{!isPostsLoading && data.map((post, index) => (
+					{!isPostsLoading && data.map((post) => (
 						(isPostsLoading
 							?
 							<Post isLoading={true} key={post._id} />
@@ -43,11 +43,8 @@ export const Home = () => {
 								key={post._id}
 								_id={post._id}
 								title={post.title}
-								imageUrl="https://res.cloudinary.com/practicaldev/image/fetch/s--UnAfrEG8--/c_imagga_scale,f_auto,fl_progressive,h_420,q_auto,w_1000/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icohm5g0axh9wjmu4oc3.png"
-								user={{
-									fullName: post.user.fullname,
-									avatarUrl: post.user.image
-								}}
+								imageUrl={post.image && 'http://localhost:4000' + post.image}
+								user={{ ...post.user }}
 								createdAt={post.createdAt}
 								viewsCount={post.viewsCount}
 								commentsCount={3}
