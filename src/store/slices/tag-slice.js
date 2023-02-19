@@ -38,3 +38,12 @@ const tagSlice = createSlice({
 })
 
 export const TagSlice = tagSlice.reducer
+
+export const tagsFilteredSelector = (state) => {
+	return state.TagSlice.data.reduce((acc, item) => {
+		if (acc.includes(item)) {
+			return acc
+		}
+		return [...acc, item]
+	}, [])
+} 

@@ -10,6 +10,7 @@ import { fetchPost, fetchTags } from '../store/slices'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
+import { tagsFilteredSelector } from '../store/slices/tag-slice';
 
 
 export const Home = () => {
@@ -17,7 +18,7 @@ export const Home = () => {
 	const dispatch = useDispatch()
 	const { data, status } = useSelector((state) => state.PostSice)
 	const auth = useSelector((state) => state.AuthSlice)
-	const tags = useSelector((state) => state.TagSlice)
+	const tags = useSelector(tagsFilteredSelector)
 	const isPostsLoading = status === 'loading'
 
 	useEffect(() => {
@@ -46,7 +47,7 @@ export const Home = () => {
 								imageUrl={post.image && 'http://localhost:4000' + post.image}
 								user={{ ...post.user }}
 								createdAt={post.createdAt}
-								viewsCount={post.viewsCount}
+								viewsCount={post.viesCount}
 								commentsCount={3}
 								tags={post.tags}
 								isEditable={auth?.data?._id === post.user._id}
@@ -56,7 +57,7 @@ export const Home = () => {
 
 				<Grid xs={4} item>
 
-					<TagsBlock items={tags.data} isLoading={false} />
+					<TagsBlock items={tags} isLoading={false} />
 
 					<CommentsBlock
 						items={[

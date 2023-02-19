@@ -79,7 +79,7 @@ export const AddPost = () => {
 
 		const postId = data._id
 
-		navigate(`/posts/:${postId}`)
+		navigate(`/posts/${postId}`)
 	}
 
 
