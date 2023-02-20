@@ -1,10 +1,9 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import axios from '../../axios'
-
 
 import { useSelector } from 'react-redux'
 import { authSelector } from '../../store/slices/auth-slice'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 
 import { stringtoArray } from '../../utils/stringToArray'
@@ -22,12 +21,17 @@ export const AddPost = () => {
 	const isAuth = useSelector(authSelector)
 	const navigate = useNavigate()
 
-
 	const imageRef = useRef(null)
+
+	const { id } = useParams()
+	const isEditing = Boolean(id)
+
 	const [image, setImage] = useState('');
 	const [title, setTitle] = useState('');
 	const [tags, setTags] = useState('');
 	const [text, setText] = useState('');
+
+
 
 
 
@@ -67,6 +71,23 @@ export const AddPost = () => {
 
 	const onClickRemoveImage = () => { };
 
+	const postChangeHandler = async () => {
+		const { data } = await axios.get(`/posts/${id}`)
+		setTitle(data.title)
+		setImage(data.image)
+		setTags(data.tags.join(','))
+		setText(data.text)
+	}
+
+	useEffect(() => {
+		if (id) {
+			postChangeHandler()
+
+		}
+		console.log('render')
+	}, [])
+
+
 	const onSubmit = async () => {
 		const field = {
 			title,
@@ -75,17 +96,23 @@ export const AddPost = () => {
 			image
 		}
 
-		const {data} = await axios.post('posts', field)
+		const { data } = isEditing
+			? await axios.patch(`posts/${id}`, field)
+			: await axios.post('posts', field)
 
-		const postId = data._id
-
+		const postId = isEditing ? id : data._id
+		console.log('render')
 		navigate(`/posts/${postId}`)
 	}
+
+
+
 
 
 	if (!window.localStorage.getItem('token') && !isAuth) {
 		return <Navigate to="/" />
 	}
+
 
 	return (
 		<Paper style={{ padding: 30 }}>
@@ -130,7 +157,7 @@ export const AddPost = () => {
 
 			<div className={styles.buttons}>
 				<Button onClick={onSubmit} size="large" variant="contained">
-					Опубликовать
+					{isEditing ? 'Обновить статью' : 'Опубликовать'}
 				</Button>
 				<a href="/">
 					<Button size="large">Отмена</Button>

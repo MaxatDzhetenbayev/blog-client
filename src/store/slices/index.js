@@ -1,4 +1,4 @@
-export { PostSice } from './post-slice'
+export { PostSlice } from './post-slice'
 export { TagSlice } from './tag-slice'
 export { AuthSlice } from './auth-slice'
 

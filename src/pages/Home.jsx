@@ -1,59 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector, } from 'react-redux'
+
+import { fetchPost, fetchTags } from '../store/slices'
+import { tagsFilteredSelector } from '../store/slices/tag-slice';
+
 
 import { Post } from '../components/Post';
 import { TagsBlock } from '../components/TagsBlock';
 import { CommentsBlock } from '../components/CommentsBlock';
 
-import { fetchPost, fetchTags } from '../store/slices'
-
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import { tagsFilteredSelector } from '../store/slices/tag-slice';
+import { Box, Typography } from '@mui/material';
+import { Posts } from '../components/Posts/Posts';
+
+
 
 
 export const Home = () => {
 
-	const dispatch = useDispatch()
-	const { data, status } = useSelector((state) => state.PostSice)
-	const auth = useSelector((state) => state.AuthSlice)
-	const tags = useSelector(tagsFilteredSelector)
-	const isPostsLoading = status === 'loading'
 
-	useEffect(() => {
-		dispatch(fetchPost())
-		dispatch(fetchTags())
-	}, [])
+	const tags = useSelector(tagsFilteredSelector)
+
+	const [tabIndex, setTabIndex] = useState(0)
+
+	function a11yProps(index) {
+		return {
+			id: `simple-tab-${index}`,
+			'aria-controls': `simple-tabpanel-${index}`,
+		};
+	}
+
+	const handleChange = (event, newValue) => {
+		setTabIndex(newValue);
+	};
 
 	return (
 		<>
-			<Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-				<Tab label="Новые" />
-				<Tab label="Популярные" />
+			<Tabs style={{ marginBottom: 15 }} value={tabIndex} onChange={handleChange} aria-label="basic tabs example">
+				<Tab label="Новые" {...a11yProps(0)} />
+				<Tab label="Популярные" {...a11yProps(0)} />
 			</Tabs>
+
 			<Grid container spacing={4}>
 
-				<Grid xs={8} item>
-					{!isPostsLoading && data.map((post) => (
-						(isPostsLoading
-							?
-							<Post isLoading={true} key={post._id} />
-							:
-							<Post
-								key={post._id}
-								_id={post._id}
-								title={post.title}
-								imageUrl={post.image && 'http://localhost:4000' + post.image}
-								user={{ ...post.user }}
-								createdAt={post.createdAt}
-								viewsCount={post.viesCount}
-								commentsCount={3}
-								tags={post.tags}
-								isEditable={auth?.data?._id === post.user._id}
-							/>)
-					))}
-				</Grid>
+				<Posts tabIndex={tabIndex} />
 
 				<Grid xs={4} item>
 
@@ -84,3 +76,5 @@ export const Home = () => {
 		</>
 	);
 };
+
+

@@ -10,6 +10,22 @@ export const fetchPost = createAsyncThunk(
 	}
 )
 
+export const fetchNewPosts = createAsyncThunk(
+	'post/fetchNewPosts',
+	async () => {
+		const { data } = await axios.get('/posts/sort/news')
+		return data
+	}
+)
+
+export const fetchPopularPosts = createAsyncThunk(
+	'post/fetchNewPosts',
+	async () => {
+		const { data } = await axios.get('/posts/sort/popular')
+		return data
+	}
+)
+
 export const fetchRemovePost = createAsyncThunk(
 	'post/fetchRemovePost',
 	async (id) => {
@@ -44,6 +60,35 @@ const postSlice = createSlice({
 			state.status = 'rejected'
 		},
 
+
+		[fetchNewPosts.pending]: (state, action) => {
+			state.status = 'loading'
+			state.error = null
+		},
+		[fetchNewPosts.fulfilled]: (state, action) => {
+			state.data = action.payload
+			state.status = 'fullfield'
+		},
+		[fetchNewPosts.rejected]: (state, action) => {
+			state.error = action.payload
+			state.status = 'rejected'
+		},
+
+
+		[fetchPopularPosts.pending]: (state, action) => {
+			state.status = 'loading'
+			state.error = null
+		},
+		[fetchPopularPosts.fulfilled]: (state, action) => {
+			state.data = action.payload
+			state.status = 'fullfield'
+		},
+		[fetchPopularPosts.rejected]: (state, action) => {
+			state.error = action.payload
+			state.status = 'rejected'
+		},
+
+
 		[fetchRemovePost.pending]: (state, action) => {
 			state.status = 'loading'
 			state.error = null
@@ -61,4 +106,6 @@ const postSlice = createSlice({
 })
 
 
-export const PostSice = postSlice.reducer
+export const PostSlice = postSlice.reducer
+
+export const postsSelector = state => state.PostSlice
