@@ -16,6 +16,7 @@ export const fetchTags = createAsyncThunk('tags/fetchTags', async () => {
 })
 
 
+
 const tagSlice = createSlice({
 	name: 'post-reduser',
 	initialState,
@@ -33,7 +34,8 @@ const tagSlice = createSlice({
 		[fetchTags.rejected]: (state, action) => {
 			state.error = action.payload
 			state.status = 'rejected'
-		}
+		},
+
 	}
 })
 

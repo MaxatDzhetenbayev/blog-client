@@ -75,7 +75,7 @@ export const AddPost = () => {
 		const { data } = await axios.get(`/posts/${id}`)
 		setTitle(data.title)
 		setImage(data.image)
-		setTags(data.tags.join(','))
+		setTags(data.tags.join(',').trim())
 		setText(data.text)
 	}
 

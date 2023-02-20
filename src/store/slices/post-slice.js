@@ -12,16 +12,21 @@ export const fetchPost = createAsyncThunk(
 
 export const fetchNewPosts = createAsyncThunk(
 	'post/fetchNewPosts',
-	async () => {
-		const { data } = await axios.get('/posts/sort/news')
+	async (tag) => {
+		const { data } = Boolean(tag)
+			? await axios.get(`/posts/sort/news?tag=${tag}`)
+			: await axios.get(`/posts/sort/news`)
 		return data
 	}
 )
 
 export const fetchPopularPosts = createAsyncThunk(
 	'post/fetchNewPosts',
-	async () => {
-		const { data } = await axios.get('/posts/sort/popular')
+	async (tag) => {
+		const { data } = Boolean(tag)
+			? await axios.get('/posts/sort/popular?tag=${tag}')
+			: await axios.get('/posts/sort/popular')
+
 		return data
 	}
 )
@@ -34,8 +39,10 @@ export const fetchRemovePost = createAsyncThunk(
 )
 
 
+
 const initialState = {
 	data: [],
+	tab: 0,
 	status: 'loading',
 	error: null
 }
@@ -44,7 +51,11 @@ const initialState = {
 const postSlice = createSlice({
 	name: 'posts',
 	initialState,
-	reducers: {},
+	reducers: {
+		changeTab: (state, action) => {
+			state.tab = action.payload
+		}
+	},
 	extraReducers: {
 
 		[fetchPost.pending]: (state, action) => {
@@ -107,5 +118,6 @@ const postSlice = createSlice({
 
 
 export const PostSlice = postSlice.reducer
+export const {changeTab} = postSlice.actions
 
 export const postsSelector = state => state.PostSlice

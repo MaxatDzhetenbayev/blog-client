@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector, } from 'react-redux'
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchPost, fetchTags } from '../store/slices'
-import { tagsFilteredSelector } from '../store/slices/tag-slice';
+import {changeTab} from '../store/slices/post-slice'
+import { fetchTags } from '../store/slices/tag-slice'
 
-
-import { Post } from '../components/Post';
-import { TagsBlock } from '../components/TagsBlock';
-import { CommentsBlock } from '../components/CommentsBlock';
+import { Posts } from '../components/Posts/Posts';
+import { RigthSide } from '../components/RigthSide/RigthSide';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import { Box, Typography } from '@mui/material';
-import { Posts } from '../components/Posts/Posts';
-
-
 
 
 export const Home = () => {
 
+	const dispatch = useDispatch()
 
-	const tags = useSelector(tagsFilteredSelector)
 
-	const [tabIndex, setTabIndex] = useState(0)
+	const tabIndex = useSelector(state => state.PostSlice.tab)
+
 
 	function a11yProps(index) {
 		return {
@@ -33,8 +28,17 @@ export const Home = () => {
 	}
 
 	const handleChange = (event, newValue) => {
-		setTabIndex(newValue);
+		dispatch(changeTab(newValue));
 	};
+
+
+	useEffect(() => {
+		dispatch(fetchTags())
+	}, [])
+
+
+
+
 
 	return (
 		<>
@@ -44,34 +48,8 @@ export const Home = () => {
 			</Tabs>
 
 			<Grid container spacing={4}>
-
 				<Posts tabIndex={tabIndex} />
-
-				<Grid xs={4} item>
-
-					<TagsBlock items={tags} isLoading={false} />
-
-					<CommentsBlock
-						items={[
-							{
-								user: {
-									fullName: 'Вася Пупкин',
-									avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-								},
-								text: 'Это тестовый комментарий',
-							},
-							{
-								user: {
-									fullName: 'Иван Иванов',
-									avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-								},
-								text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-							},
-						]}
-						isLoading={false}
-					/>
-
-				</Grid>
+				<RigthSide />
 			</Grid>
 		</>
 	);

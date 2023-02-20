@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPopularPosts, fetchNewPosts, postsSelector } from '../../store/slices/post-slice'
+import { fetchPopularPosts, fetchNewPosts, postsSelector, fetchtPostsFilteredByTag } from '../../store/slices/post-slice'
 
 import { Post } from '../Post'
 
@@ -11,23 +13,24 @@ import { Box, Grid, Typography } from '@mui/material'
 export const Posts = ({ tabIndex }) => {
 
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
 	const { data, status } = useSelector(postsSelector)
 	const auth = useSelector((state) => state.AuthSlice)
 
 	const isPostsLoading = status === 'loading'
 
-
-
+	const { tag } = useParams()
 
 
 	useEffect(() => {
 		if (tabIndex === 0) {
-			dispatch(fetchNewPosts())
+			dispatch(fetchNewPosts(tag))
 		}
 		if (tabIndex === 1) {
-			dispatch(fetchPopularPosts())
+			dispatch(fetchPopularPosts(tag))
+
 		}
-	}, [tabIndex])
+	}, [tabIndex, tag])
 
 
 	return (
