@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 
-import {changeTab} from '../store/slices/post-slice'
+import { changeTab } from '../store/slices/post-slice'
 import { fetchTags } from '../store/slices/tag-slice'
 
 import { Posts } from '../components/Posts/Posts';
