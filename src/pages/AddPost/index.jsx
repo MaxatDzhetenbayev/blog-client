@@ -71,13 +71,13 @@ export const AddPost = () => {
 
 	const onClickRemoveImage = () => { };
 
-	const postChangeHandler = async () => {
+	const postChangeHandler = useCallback(async () => {
 		const { data } = await axios.get(`/posts/${id}`)
 		setTitle(data.title)
 		setImage(data.image)
 		setTags(data.tags.join(',').trim())
 		setText(data.text)
-	}
+	}, [id])
 
 	useEffect(() => {
 		if (id) {
@@ -85,7 +85,7 @@ export const AddPost = () => {
 
 		}
 		console.log('render')
-	}, [])
+	}, [id, postChangeHandler])
 
 
 	const onSubmit = async () => {

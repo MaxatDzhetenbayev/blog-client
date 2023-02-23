@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchPopularPosts, fetchNewPosts, postsSelector } from '../../store/slices/post-slice'
@@ -28,7 +27,7 @@ export const Posts = ({ tabIndex }) => {
 			dispatch(fetchPopularPosts(tag))
 
 		}
-	}, [tabIndex, tag])
+	}, [tabIndex, tag, dispatch])
 
 
 	return (
@@ -47,6 +46,7 @@ export const Posts = ({ tabIndex }) => {
 							user={{ ...post.user }}
 							createdAt={post.createdAt}
 							viewsCount={post.viewsCount}
+							likesCount={post.likesCount}
 							commentsCount={post.comments.length}
 							tags={post.tags}
 							isEditable={auth?.data?._id === post.user._id}
@@ -67,6 +67,7 @@ export const Posts = ({ tabIndex }) => {
 							user={{ ...post.user }}
 							createdAt={post.createdAt}
 							viewsCount={post.viewsCount}
+							likesCount={post.likesCount}
 							commentsCount={3}
 							tags={post.tags}
 							isEditable={auth?.data?._id === post.user._id}

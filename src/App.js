@@ -16,10 +16,7 @@ function App() {
 
 	useEffect(() => {
 		dispatch(fetchUserLogin())
-	}, [])
-
-
-
+	}, [dispatch])
 
 
 	return (

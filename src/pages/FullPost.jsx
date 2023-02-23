@@ -21,8 +21,8 @@ export const FullPost = () => {
 			setData(res.data)
 			setIsLoading(false)
 		})
-
-	}, [])
+		console.log('view')
+	}, [id])
 
 
 	if (isLoading) {
@@ -38,6 +38,7 @@ export const FullPost = () => {
 				user={data.user}
 				createdAt={data.createdAt}
 				viewsCount={data.viewsCount}
+
 				commentsCount={data.comments.length}
 				tags={data.tags}
 				isFullPost

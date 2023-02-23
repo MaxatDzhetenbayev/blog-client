@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Navigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,13 +12,14 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
 import styles from "./Login.module.scss";
+import { Box } from '@mui/system';
 
 
 export const Login = () => {
 
 	const dispatch = useDispatch()
 	const isUserValide = useSelector(authSelector)
-
+	const [error, setError] = useState('')
 	const {
 		handleSubmit,
 		register,
@@ -35,12 +36,12 @@ export const Login = () => {
 		const user = await dispatch(fetchUserAuth(params))
 
 		if (!user.payload) {
-			return alert('Вы не авторизованы')
+			setError('Неверный логин или пароль!')
 		}
 
 		if ('token' in user.payload) {
 			window.localStorage.setItem('token', user.payload.token)
-			}
+		}
 
 	}
 
@@ -53,6 +54,8 @@ export const Login = () => {
 			<Typography classes={{ root: styles.title }} variant="h5">
 				Вход в аккаунт
 			</Typography>
+
+
 			<form onSubmit={handleSubmit(submitHandler)}>
 				<TextField
 					className={styles.field}
@@ -73,7 +76,11 @@ export const Login = () => {
 					{...register('password', { required: 'Укажите пароль' })}
 
 				/>
-
+				<Box style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+					<Typography color='red'>
+						{error && error}
+					</Typography>
+				</Box>
 				<Button type="submit" size="large" variant="contained" fullWidth>
 					Войти
 				</Button>

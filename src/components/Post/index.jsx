@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { fetchRemovePost } from '../../store/slices/post-slice'
 import clsx from 'clsx';
@@ -21,6 +22,7 @@ export const Post = ({
 	imageUrl,
 	user,
 	viewsCount,
+	likesCount,
 	commentsCount,
 	tags,
 	children,
@@ -28,7 +30,6 @@ export const Post = ({
 	isLoading,
 	isEditable,
 }) => {
-
 
 	const dispatch = useDispatch()
 
@@ -38,7 +39,10 @@ export const Post = ({
 
 	const onClickRemove = (_id) => {
 		dispatch(fetchRemovePost(_id))
+		window.location.reload()
 	};
+
+
 
 
 
@@ -72,7 +76,7 @@ export const Post = ({
 					<ul className={styles.tags}>
 						{tags.map((name) => (
 							<li key={name}>
-								<a href={`/tag/${name}`}>#{name}</a>
+								<Link to={`/tags/${name}`}>#{name}</Link>
 							</li>
 						))}
 					</ul>
@@ -89,6 +93,6 @@ export const Post = ({
 					</ul>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 };

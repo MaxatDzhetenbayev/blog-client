@@ -24,7 +24,7 @@ export const fetchPopularPosts = createAsyncThunk(
 	'post/fetchNewPosts',
 	async (tag) => {
 		const { data } = Boolean(tag)
-			? await axios.get('/posts/sort/popular?tag=${tag}')
+			? await axios.get(`/posts/sort/popular?tag=${tag}`)
 			: await axios.get('/posts/sort/popular')
 
 		return data
@@ -118,6 +118,6 @@ const postSlice = createSlice({
 
 
 export const PostSlice = postSlice.reducer
-export const {changeTab} = postSlice.actions
+export const { changeTab } = postSlice.actions
 
 export const postsSelector = state => state.PostSlice

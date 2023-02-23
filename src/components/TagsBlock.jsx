@@ -1,8 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-import { useDispatch } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { fetchtPostsFilteredByTag } from '../store/slices/post-slice'
+import {Link} from 'react-router-dom'
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -22,9 +20,9 @@ export const TagsBlock = ({ items, isLoading = true }) => {
 		<SideBlock title="Тэги">
 			<List>
 				{(isLoading ? [...Array(5)] : items).map((name, i) => (
-					<a
+					<Link
 						style={{ textDecoration: "none", color: "black" }}
-						href={`/tags/${name}`}
+						to={`/tags/${name}`}
 						key={i}
 					>
 						<ListItem disablePadding>
@@ -41,7 +39,7 @@ export const TagsBlock = ({ items, isLoading = true }) => {
 									)}
 							</ListItemButton>
 						</ListItem>
-					</a>
+					</Link>
 				))}
 			</List>
 		</SideBlock>
