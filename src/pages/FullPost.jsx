@@ -11,6 +11,7 @@ import { CommentsBlock } from "../components/CommentsBlock";
 export const FullPost = () => {
 
 	const [data, setData] = useState()
+
 	const [isLoading, setIsLoading] = useState(true)
 
 	const { id } = useParams()
@@ -21,7 +22,6 @@ export const FullPost = () => {
 			setData(res.data)
 			setIsLoading(false)
 		})
-		console.log('view')
 	}, [id])
 
 
